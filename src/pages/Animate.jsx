@@ -10,6 +10,7 @@ function Animate() {
   const [wallAddress, setWallAddress] = useState("")
   const [returnChar, setReturnChar] = useState()
   const [wordVisibilty, setwordVisibilty] = useState()
+  const [wordeLenCounter, setWordLenCounter] = useState()
   const [mintWordCount, setMinWordCount] = useState()
   
 
@@ -103,7 +104,8 @@ const getData=async()=>{
   const res2 = await axios.post("http://localhost:8080/get-data",add)
   const ch = res2.data.char
   const wordLengthCounter = (res2.data.word.length)
-  setwordVisibilty(wordLengthCounter)
+  setwordVisibilty(res2.data.word)
+  setWordLenCounter(wordLengthCounter)
   setReturnChar(ch)
 }
 
@@ -140,11 +142,9 @@ const words = ["HELLO","APPLE","FLANK","GHOST","JUMPS","MIZEN","COMIC","RABBIT"]
     </div>
     <div className="words px-6">
     <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 gap-10">
-        {words.map((item,i)=>item.includes(returnChar)?(<span key={i}  onClick={()=>setWord(item)} className='text-red-600 text-center shadow-[#ff6786] shadow-lg'>{item}</span>):(<span key={i} className='text-white text-center'>{item}</span>)
+        {words.map((item,i)=>item.includes(returnChar)?(<span key={i}  onClick={()=>setWord(item)} className='text-red-600 text-center shadow-[#7a2b3b] shadow-lg'>{item}</span>):(<span key={i} className='text-white text-center'>{item}</span>)
         )}
-        </p>
-      
-        
+        </p>   
     </div>
     </div>
 
