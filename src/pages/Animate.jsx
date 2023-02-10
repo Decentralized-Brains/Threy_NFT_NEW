@@ -10,6 +10,7 @@ function Animate() {
   const [wallAddress, setWallAddress] = useState("")
   const [returnChar, setReturnChar] = useState()
   const [showWord, setShowWord] = useState()
+  const [mintWordCount, setMinWordCount] = useState()
   
 
   const type=(showWord)=>{
@@ -40,7 +41,7 @@ function Animate() {
     
     // Start Function 2
 
-    let text2 = `<h1>How to mint</h1><p>1. Connect your wallet <br> 2. Identify your assigned letter <br> 3. Find a word with your letter in it (must be red(unclaimed)) <br> 4. Search for peers that will allow you to finish the word <br> 5. Click the word the same time as your friends (you have 30 seconds before it resets) <br> 6. Once the word is fully green, a mint button should appear, click that <br> 7. Confirm the transaction and recieve your nft <br><br>dont refresh or you will have to watch the animation again, the words status are updated live</p><h1 class='stats'>Price : 0.015 <br>Supply : 3000 <br>Supply : ${showWord} </h1>`;
+    let text2 = `<h1>How to mint</h1><p>1. Connect your wallet <br> 2. Identify your assigned letter <br> 3. Find a word with your letter in it (must be red(unclaimed)) <br> 4. Search for peers that will allow you to finish the word <br> 5. Click the word the same time as your friends (you have 30 seconds before it resets) <br> 6. Once the word is fully green, a mint button should appear, click that <br> 7. Confirm the transaction and recieve your nft <br><br>dont refresh or you will have to watch the animation again, the words status are updated live</p><h1 class='stats'>Price : 0.015 <br>Supply : 3000 <br>Selected Word : ${showWord} </h1>`;
     var counter2 = 0;
     var intervalId2;
     
@@ -113,21 +114,28 @@ const setWord=async(word)=>{
   setShowWord(res2.data.word)
 }
 
+const getMintWord=async()=>{
+   const mintWord = await axios.post("http://localhost:8080/get-word-count")
+   console.log(mintWord)
+   setMinWordCount(mintWord.data.count)
+}
+
 useEffect(()=>{
   if(wallAddress!=="")
   getData()
+  getMintWord()
 },[wallAddress])
 
-console.log(showWord)
 
 const words = ["HELLO","APPLE","FLANK","GHOST","JUMPS","MIZEN","COMIC","RABBIT"]
   return (
     <div>
-      
     <div className="bodie">
-    {/* <h1 className='text-[#19c50d] absolute bottom-0 '>Selected Word: {showWord}</h1> */}
-      <div className='absolute flex flex-col gap-2 top-4 right-4'>
-        <button onClick={()=>{connecWallet()}}   className= 'btn text-white hover:bg-[#1ea214] px-6 py-2 rounded-lg bg-[#19c50d] right-8'>Connect</button>    
+      <div className='absolute flex flex-col items-end gap-2 top-4 right-4'>
+        <div className='flex gap-4'>
+        {showWord.length===mintWordCount? <button className= 'btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button>:null}
+        <button onClick={()=>{connecWallet()}}   className= 'btn text-white hover:bg-[#1ea214] px-6 py-2 rounded-lg bg-[#19c50d] right-8'>Connect</button>
+        </div>    
         <span className='text-white text-[14px] font-semibold' name="address" >{wallAddress?`${wallAddress.substr(0,5)}...${wallAddress.substr(35,28)}`:null}</span>      
       </div>
         <h1 id="myh1" className="header"></h1>
