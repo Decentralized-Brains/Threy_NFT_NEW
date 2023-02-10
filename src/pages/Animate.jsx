@@ -9,11 +9,11 @@ function Animate() {
   const [prev, setPrev]= useState(false)
   const [wallAddress, setWallAddress] = useState("")
   const [returnChar, setReturnChar] = useState()
-  const [showWord, setShowWord] = useState()
+  const [wordVisibilty, setwordVisibilty] = useState()
   const [mintWordCount, setMinWordCount] = useState()
   
 
-  const type=(showWord)=>{
+const type=(showWord)=>{
   var images = document.querySelectorAll('img');
   for (var i = 0; i < images.length; i++) {
       images[i].ondragstart = function() {
@@ -81,8 +81,8 @@ function Animate() {
 }
 
 useEffect(()=>{
-  type(showWord)
-},[showWord])
+  type(wordVisibilty)
+},[wordVisibilty])
 
 
 const connecWallet=async()=>{
@@ -95,28 +95,24 @@ const connecWallet=async()=>{
       setPrev(true)
       const data = {wallet:walletAddress,char:generateChar()}
       const res =  await axios.post("http://localhost:8080/set-data",data)  
-      console.log(res.data)
+    
 
   }
 const getData=async()=>{
   const add = {wallet:wallAddress}
   const res2 = await axios.post("http://localhost:8080/get-data",add)
   const ch = res2.data.char
-  setShowWord(res2.data.word)
-  console.log(ch)
+  const wordLengthCounter = (res2.data.word.length)
+  setwordVisibilty(wordLengthCounter)
   setReturnChar(ch)
 }
 
 const setWord=async(word)=>{
   const add = {wallet:wallAddress,word}
   const res2 = await axios.post("http://localhost:8080/set-data",add)
-  console.log(res2.data.word)
-  setShowWord(res2.data.word)
 }
-
 const getMintWord=async()=>{
    const mintWord = await axios.post("http://localhost:8080/get-word-count")
-   console.log(mintWord)
    setMinWordCount(mintWord.data.count)
 }
 
@@ -126,15 +122,15 @@ useEffect(()=>{
   getMintWord()
 },[wallAddress])
 
-
 const words = ["HELLO","APPLE","FLANK","GHOST","JUMPS","MIZEN","COMIC","RABBIT"]
   return (
     <div>
     <div className="bodie">
       <div className='absolute flex flex-col items-end gap-2 top-4 right-4'>
         <div className='flex gap-4'>
-        {showWord.length===mintWordCount? <button className= 'btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button>:null}
+        {wordVisibilty===mintWordCount? <button className= 'btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button>:null}
         <button onClick={()=>{connecWallet()}}   className= 'btn text-white hover:bg-[#1ea214] px-6 py-2 rounded-lg bg-[#19c50d] right-8'>Connect</button>
+
         </div>    
         <span className='text-white text-[14px] font-semibold' name="address" >{wallAddress?`${wallAddress.substr(0,5)}...${wallAddress.substr(35,28)}`:null}</span>      
       </div>
