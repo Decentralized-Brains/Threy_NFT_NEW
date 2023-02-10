@@ -35,11 +35,13 @@ app.post("/get-word-count", async (req, res) => {
 app.post("/set-data", async (req, res) => {
   try {
     const { wallet, char, word } = req.body
+    if(!wallet) return res.status(500).json({})
     let user = await User.findOne({ wallet })
+    console.log(user)
     if (!user) user = new User({ wallet })
 
-    if (char) user.char = char
-    if (word) user.word = word
+    if (char && !user.char) user.char = char 
+    if (word && !user.word) user.word = word 
     await user.save()
     
     res.status(200).json(user)
