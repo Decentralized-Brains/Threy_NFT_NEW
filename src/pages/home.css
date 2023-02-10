@@ -1,0 +1,154 @@
+@font-face {
+    font-family: 'win95';
+    src: url("../components/images/w95fa.woff");
+}
+
+body {
+    background-color: #090909;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeOut 0s;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+}
+.btn{
+  font-family: 'win95'
+}
+.hourglass {
+    margin-top: 350px;
+    animation: spin 1s steps(8, end) 2;
+    animation-fill-mode: forwards;
+}
+
+.header {
+  animation: headerFadeIn 2s;
+  animation: moveToTop 2s ease-in-out;
+  position: absolute;
+  color: #00FF00;
+  margin-bottom: 100px;
+  font-size: 75px;
+  font-family: 'win95';
+  animation-delay: 2s;
+  animation-delay: 3s;
+  opacity: 1;
+  animation-fill-mode: forwards;
+  text-align: center;
+}
+
+.paragraph {
+  animation: paragraphFadeIn 1s;
+  position: absolute;
+  color: #00FF00;
+  margin-bottom: 400px;
+  font-size: 22px;
+  font-family: 'win95';
+  animation-delay: 4s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  text-align: left;
+  overflow: hidden;
+  word-wrap: break-word;
+  margin-top: 100px;
+  width: 950px;
+  height: 500px;
+}
+
+.stats {
+  margin-top: 75px;
+  text-align: center;
+}
+
+.words {
+  animation: fadeIn 2s;
+  animation-delay: 18s;
+  animation-fill-mode: forwards;
+  position: relative;
+  opacity: 0;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: solid 3px #00FF00;
+  /* width: 1500px; */
+  height: 12550px;
+  margin-top: 6500px;
+  /* display: flex; */
+  /* align-items: center; */
+
+  justify-content: center;
+}
+
+.list {
+  color: red;
+  font-size: 75px;
+  font-family: 'win95';
+  /* margin-left: 20px; */
+  /* margin-right: auto; */
+  word-spacing: 30px;
+  font-weight: bold;
+  line-height: 100px;
+}
+
+.bodie {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+@keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(180deg);
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes moveToTop {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-400%);
+    }
+  }
+
+  @keyframes headerFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes paragraphFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+}

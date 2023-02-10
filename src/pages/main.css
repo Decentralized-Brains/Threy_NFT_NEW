@@ -1,0 +1,82 @@
+@font-face {
+  font-family: 'win95';
+  src: url("../components/images/w95fa.woff");
+}
+
+body {
+  background-color: #080808;
+  margin: 0;
+  padding: 0;
+  cursor: url(http://www.rw-designer.com/cursor-extern.php?id=151727) , auto;
+}
+
+.intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  z-index: 5;
+}
+
+.win95 {
+  height: 800px;
+  margin-top: 60px;
+  margin-bottom: 50px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.computer {
+  height: 100px;
+  z-index: 5;
+}
+
+
+.link1 {
+  position: absolute;
+  left: 48%;
+  top: 70%;
+  cursor: url(http://www.rw-designer.com/cursor-extern.php?id=151740), pointer;
+}
+
+
+.enter {
+  position: absolute;
+  left: 51%;
+  top: 68%;
+  margin-top: 100px;
+  color: white;
+  font-family: "win95";
+  z-index: 5;
+}
+
+
+.animation {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #080808;
+  animation: fadeOut 1s ease-in-out;
+  animation-fill-mode: forwards;
+  animation-delay: 0.5s;
+}
+
+.wlogo {
+  height: 100px;
+  position: absolute;
+}
+
+@keyframes fadeOut{
+  from {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
+  }
+}
