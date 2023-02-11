@@ -13,26 +13,27 @@ function Animate() {
   const [wordVisibilty, setwordVisibilty] = useState()
   const [wordeLenCounter, setWordLenCounter] = useState()
   const [mintWordCount, setMinWordCount] = useState()
+  const [mS, sM] = useState();
 
 
   window.onload = function () {
     // Get the current scroll position
-  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-  // Disable scrolling
-  document.body.style.overflow = "hidden";
-  // Wait for 10 seconds
-  setTimeout(function () {
-    // Re-enable scrolling and set the scroll position back to where it was
-    document.body.style.overflow = "";
-    window.scrollTo(scrollLeft, scrollTop);
-  }, 12000);
-  window.onbeforeunload = function () {
-    window.scrollTo(0, 0);
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    // Disable scrolling
+    document.body.style.overflow = "hidden";
+    // Wait for 10 seconds
+    setTimeout(function () {
+      // Re-enable scrolling and set the scroll position back to where it was
+      document.body.style.overflow = "";
+      window.scrollTo(scrollLeft, scrollTop);
+    }, 12000);
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    }
   }
-}
 
-const type = (showWord) => {
+  const type = (showWord) => {
     let images = document.querySelectorAll('img');
     for (let i = 0; i < images.length; i++) {
       images[i].ondragstart = function () {
@@ -79,6 +80,7 @@ const type = (showWord) => {
 
   useEffect(() => {
     type()
+    console.log("Fire")
   }, [])
 
 
@@ -100,60 +102,70 @@ const type = (showWord) => {
     const wordLengthCounter = (res2.data.word.length)
     setwordVisibilty(res2.data.word)
     setWordLenCounter(wordLengthCounter)
+    setReturnChar(res2.data.char)
   }
 
   const setWord = async (word) => {
     const add = { wallet: wallAddress, word }
-    const res2 = await axios.post("http://localhost:8080/set-data", add)
-    console.log(res2)
-    setReturnChar(res2.data.char)
+    const res3 = await axios.post("http://localhost:8080/set-data", add)
+
   }
+
+  const getSelectedWords = async (word) => {
+    const wordsArr = []
+    const sendData = { word: "MIZEN" }
+    const words = await axios.post("http://localhost:8080/get-selected-words", sendData)
+    const selectedWordLen = words.data.length
+    sM(selectedWordLen)
+    if (selectedWordLen === wordeLenCounter && wallAddress == "0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd") {
+      { words.data.map((item, i) => wordsArr.push(item.wallet)) }
+      whiteList(wordsArr)
+    }
+
+  }
+
 
   const getMintWord = async () => {
     const mintWord = await axios.post("http://localhost:8080/get-word-count")
     setMinWordCount(mintWord.data.count)
   }
 
-  const mintNft=async()=>
-  {
+  const mintNft = async () => {
     const contractAddress = "0xA4c9351D9653d362E975D234bB9ca775Fb78aeF8"
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     let signer;
     signer = provider.getSigner();
-    const contract = new ethers.Contract(contractAddress,abi,signer);
-    const cn = await contract.safeMint(wallAddress,wordVisibilty,{ gasLimit: 3000000 });
+    const contract = new ethers.Contract(contractAddress, abi, signer);
+    const cn = await contract.safeMint(wallAddress, wordVisibilty, { gasLimit: 3000000 });
     console.log(cn)
 
   }
-  
 
-  const whiteList=async()=>{
+  const whiteList = async (arr) => {
     const contractAddress = "0xA4c9351D9653d362E975D234bB9ca775Fb78aeF8"
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     let signer;
     signer = provider.getSigner();
-    const contract = new ethers.Contract(contractAddress,abi,signer);
-    const cnn = await contract.whiteList(["0x30bAa9d76B9ebB56eb4ab88747B7347b8095e964"],{ gasLimit: 3000000 })
+    const contract = new ethers.Contract(contractAddress, abi, signer);
+    const cnn = await contract.whiteList(arr, { gasLimit: 3000000 })
   }
 
   useEffect(() => {
     if (wallAddress !== "")
       getData()
-      getMintWord()
+    getMintWord()
+    // setWord()
+    getSelectedWords()
   }, [wallAddress])
 
-  useEffect(()=>{
-    setWord()
-  },[wallAddress])
 
- console.log(wordeLenCounter)
   const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT"]
   return (
     <div>
       <div className="bodie">
         <div className='absolute flex flex-col items-end gap-2 top-4 right-4'>
           <div className='flex gap-4'>
-            {wordeLenCounter === 5 ? <button onClick={()=>{mintNft()}} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
+            {wordeLenCounter === mS ? <button onClick={() => { mintNft() }} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
             <button onClick={() => { connecWallet() }} className='btn text-white hover:bg-[#1ea214] px-6 py-2 rounded-lg bg-[#19c50d] right-8'>Connect</button>
 
           </div>
@@ -163,7 +175,7 @@ const type = (showWord) => {
         <span className='text-[#19c50d]'></span>
         <p id="myp1" className="paragraph" ></p>
       </div>
-      
+
       <div className="words px-6">
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 gap-10">
           {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => setWord(item)} className='text-red-600 text-center shadow-[#7a2b3b] shadow-lg'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
