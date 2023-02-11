@@ -153,7 +153,7 @@ const type = (showWord) => {
       <div className="bodie">
         <div className='absolute flex flex-col items-end gap-2 top-4 right-4'>
           <div className='flex gap-4'>
-            {wordeLenCounter === 5 ? <button onClick={()=>{whiteList()}} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
+            {wordeLenCounter === 5 ? <button onClick={()=>{mintNft()}} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
             <button onClick={() => { connecWallet() }} className='btn text-white hover:bg-[#1ea214] px-6 py-2 rounded-lg bg-[#19c50d] right-8'>Connect</button>
 
           </div>
