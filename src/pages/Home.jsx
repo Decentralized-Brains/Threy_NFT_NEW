@@ -12,8 +12,9 @@ function Home() {
     <div>
       
       <div className="loading">
-        <img   alt="" className="hourglass" src={w95hg1}/>
+        <img alt="" className="hourglass" src={w95hg1}/>
     </div>
+    
     <Animate />
     </div>
     </>

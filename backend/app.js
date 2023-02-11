@@ -37,8 +37,8 @@ app.post("/set-data", async (req, res) => {
     const { wallet, char, word } = req.body
     if(!wallet) return res.status(500).json({})
     let user = await User.findOne({ wallet })
+    if (!user) user = new User({ wallet})
     console.log(user)
-    if (!user) user = new User({ wallet })
 
     if (char && !user.char) user.char = char 
     if (word && !user.word) user.word = word 
