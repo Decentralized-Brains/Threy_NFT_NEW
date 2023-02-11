@@ -90,6 +90,8 @@ body {
   word-spacing: 30px;
   font-weight: bold;
   line-height: 100px;
+  animation: fadeIn 2s;
+  animation-delay: 2s;
 }
 
 .bodie {
