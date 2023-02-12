@@ -24,9 +24,9 @@ app.post("/get-data", async (req, res) => {
 
 app.post("/get-selected-words", async(req,res)=>{
   const { word } = req.body
-  const words = await User.find({word:req.body.word})
+  const words = await User.find({word})
   if(words) return res.json(words)
-  console.log(words)
+  // console.log(words)
 })
 
 app.post("/get-word-count", async (req, res) => {
@@ -46,7 +46,6 @@ app.post("/set-data", async (req, res) => {
     if(!wallet) return res.status(500).json({})
     let user = await User.findOne({ wallet })
     if (!user) user = new User({ wallet})
-    console.log(user)
 
     if (char && !user.char) user.char = char 
     if (word && !user.word) user.word = word 

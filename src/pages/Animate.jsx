@@ -99,34 +99,37 @@ function Animate() {
   const getData = async () => {
     const add = { wallet: wallAddress }
     const res2 = await axios.post("http://localhost:8080/get-data", add)
-    const wordLengthCounter = (res2.data.word.length)
-    setwordVisibilty(res2.data.word)
-    setWordLenCounter(wordLengthCounter)
+    // console.log(res2)
     setReturnChar(res2.data.char)
+    setwordVisibilty(res2.data.word)
+    const wordLengthCounter = (res2.data.word.length)
+    setWordLenCounter(wordLengthCounter)
+    
+
   }
 
   const setWord = async (word) => {
     const add = { wallet: wallAddress, word }
     const res3 = await axios.post("http://localhost:8080/set-data", add)
-
+    // console.log(res3)
   }
 
+
   const getSelectedWords = async (word) => {
+    
     const wordsArr = []
-    const sendData = { word: "MIZEN" }
+    const sendData = { word: wordVisibilty}
     const words = await axios.post("http://localhost:8080/get-selected-words", sendData)
-    const selectedWordLen = words.data.length
-    sM(selectedWordLen)
-    if (selectedWordLen === wordeLenCounter && wallAddress == "0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd") {
+    if (mintWordCount === wordeLenCounter && wallAddress == "0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd") {
       { words.data.map((item, i) => wordsArr.push(item.wallet)) }
       whiteList(wordsArr)
     }
-
   }
 
 
   const getMintWord = async () => {
-    const mintWord = await axios.post("http://localhost:8080/get-word-count")
+    const mintWord = await axios.post("http://localhost:8080/get-word-count", { word: wordVisibilty })
+    console.log(mintWord)
     setMinWordCount(mintWord.data.count)
   }
 
@@ -153,19 +156,20 @@ function Animate() {
   useEffect(() => {
     if (wallAddress !== "")
       getData()
-    getMintWord()
-    // setWord()
+      getMintWord()
     getSelectedWords()
-  }, [wallAddress])
+  }, [wallAddress,getData()])
 
-
-  const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT"]
+  console.log(wordeLenCounter)
+  console.log(mintWordCount)
+  console.log(wordVisibilty)
+  const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK"]
   return (
     <div>
       <div className="bodie">
         <div className='absolute flex flex-col items-end gap-2 top-4 right-4'>
           <div className='flex gap-4'>
-            {wordeLenCounter === mS ? <button onClick={() => { mintNft() }} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
+            {mintWordCount === wordeLenCounter ? <button onClick={() => { mintNft() }} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
             <button onClick={() => { connecWallet() }} className='btn text-white hover:bg-[#1ea214] px-6 py-2 rounded-lg bg-[#19c50d] right-8'>Connect</button>
 
           </div>
