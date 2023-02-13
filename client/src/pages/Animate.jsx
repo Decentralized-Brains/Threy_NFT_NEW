@@ -5,10 +5,6 @@ import abi from "../abi.json"
 import { BACKEND } from '../config'
 import { generateChar } from '../functions/GenRanChar'
 import "./home.css"
-import {toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-// toast.configure()
-
 
 
 
@@ -86,6 +82,7 @@ function Animate() {
     setPrev(true)
     const data = { wallet: walletAddress, char: generatedChar }
     const res = await axios.post(BACKEND + "/set-data", data)
+    
   }
 
   const getData = async () => {
@@ -166,11 +163,14 @@ console.log(returnChar)
             {mintWordCount === wordeLenCounter ? <button onClick={() => { mintNft() }} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
             
             <button onClick={() => { connecWallet() }} className='btn text-white hover:bg-[#1ea214] px-8 py-2 rounded-lg bg-[#19c50d] right-8'>Connect</button>
+            
+            
           </div>
-          <div className='flex flex-col'>
+          <div className='flex flex-col p-2'>
           <span className='text-white text-[14px] font-semibold' name="address" >{wallAddress ? `${wallAddress.substr(0, 5)}...${wallAddress.substr(35, 28)}` : null}</span>
 
           {wordVisibilty!==undefined?<h1 className='text-white text-[14px] font-semibold'>Selected: <span className='text-[#42f435]'>{wordVisibilty}</span></h1>:null}
+          {returnChar? <span className='text-white'>Character: <span className='text-[#42f435] font-semibold'> {returnChar} </span></span>:null}
           </div>
           
           
