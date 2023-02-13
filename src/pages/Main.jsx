@@ -7,7 +7,23 @@ import { useNavigate } from "react-router-dom";
 
 function Main() {
   const navigate = useNavigate()
-  
+
+  const heightScroll = function () {
+    // Get the current scroll position
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    // Disable scrolling
+    document.body.style.overflow = "hidden";
+    // Wait for 10 seconds
+    setTimeout(function () {
+      // Re-enable scrolling and set the scroll position back to where it was
+      document.body.style.overflow = "";
+      window.scrollTo(scrollLeft, scrollTop);
+    }, 12000);
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    }
+  }
   return (
     <div className="App" style={{overflow:"hidden"}}>
       <div className="animation">
@@ -17,7 +33,7 @@ function Main() {
       <div className="intro">
       <div >
         <img alt="" className="win95" src={win95} />
-        <img onClick={()=>{navigate("home")}} alt="" className="computer link1" src={tumblr} />
+        <img onClick={()=>{navigate("home");heightScroll()}} alt="" className="computer link1" src={tumblr} />
         <p className="enter max-sm:left-[55%] sm:left-[52%] md:left-[51%]">enter</p>
       </div>
       </div>

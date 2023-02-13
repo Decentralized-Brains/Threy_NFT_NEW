@@ -13,25 +13,10 @@ function Animate() {
   const [wordVisibilty, setwordVisibilty] = useState()
   const [wordeLenCounter, setWordLenCounter] = useState()
   const [mintWordCount, setMinWordCount] = useState()
-  const [mS, sM] = useState();
+  const [ownerAddress, setOwnerAddress] = useState("0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd")
 
 
-  window.onload = function () {
-    // Get the current scroll position
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-    // Disable scrolling
-    document.body.style.overflow = "hidden";
-    // Wait for 10 seconds
-    setTimeout(function () {
-      // Re-enable scrolling and set the scroll position back to where it was
-      document.body.style.overflow = "";
-      window.scrollTo(scrollLeft, scrollTop);
-    }, 12000);
-    window.onbeforeunload = function () {
-      window.scrollTo(0, 0);
-    }
-  }
+  
 
   const type = (showWord) => {
     let images = document.querySelectorAll('img');
@@ -120,7 +105,8 @@ function Animate() {
     const wordsArr = []
     const sendData = { word: wordVisibilty}
     const words = await axios.post("http://localhost:8080/get-selected-words", sendData)
-    if (mintWordCount === wordeLenCounter && wallAddress == "0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd") {
+    console.log()
+    if (mintWordCount === wordeLenCounter && wallAddress == ownerAddress) {
       { words.data.map((item, i) => wordsArr.push(item.wallet)) }
       whiteList(wordsArr)
     }
@@ -163,7 +149,7 @@ function Animate() {
   console.log(wordeLenCounter)
   console.log(mintWordCount)
   console.log(wordVisibilty)
-  const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK"]
+  const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK", "QUEEN"]
   return (
     <div>
       <div className="bodie">
