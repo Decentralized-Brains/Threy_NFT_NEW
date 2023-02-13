@@ -88,7 +88,6 @@ function Animate() {
   const getData = async () => {
     const add = { wallet: wallAddress }
     const res2 = await axios.post(BACKEND + "/get-data", add)
-    console.log(res2)
     setReturnChar(res2.data.char)
     setwordVisibilty(res2.data.word)
     setWordPrevMode(true)
@@ -110,7 +109,6 @@ function Animate() {
     const wordsArr = []
     const sendData = { word: wordVisibilty}
     const words = await axios.post(BACKEND + "/get-selected-words", sendData)
-    console.log()
     if (mintWordCount === wordeLenCounter && wallAddress == ownerAddress) {
       { words.data.map((item, i) => wordsArr.push(item.wallet)) }
       whiteList(wordsArr)
@@ -151,7 +149,6 @@ function Animate() {
     getSelectedWords()
   }, [wallAddress,getData()])
 
-console.log(returnChar)
   const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK", "QUEEN","VOWEL"]
   return (
     <div>
