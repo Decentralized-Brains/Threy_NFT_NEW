@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
-import "./home.css"
-import { ethers } from 'ethers'
-import { useState } from 'react'
-import { generateChar } from '../functions/GenRanChar'
 import axios from 'axios'
+import { ethers } from 'ethers'
+import React, { useEffect, useState } from 'react'
 import abi from "../abi.json"
+import { BACKEND } from '../config'
+import { generateChar } from '../functions/GenRanChar'
+import "./home.css"
 
 function Animate() {
   const [prev, setPrev] = useState(false)
@@ -78,12 +78,12 @@ function Animate() {
     setWallAddress(walletAddress);
     setPrev(true)
     const data = { wallet: walletAddress, char: generateChar() }
-    const res = await axios.post("http://localhost:8080/set-data", data)
+    const res = await axios.post(BACKEND + "/set-data", data)
   }
 
   const getData = async () => {
     const add = { wallet: wallAddress }
-    const res2 = await axios.post("http://localhost:8080/get-data", add)
+    const res2 = await axios.post(BACKEND + "/get-data", add)
     // console.log(res2)
     setReturnChar(res2.data.char)
     setwordVisibilty(res2.data.word)
@@ -95,7 +95,7 @@ function Animate() {
 
   const setWord = async (word) => {
     const add = { wallet: wallAddress, word }
-    const res3 = await axios.post("http://localhost:8080/set-data", add)
+    const res3 = await axios.post(BACKEND + "/set-data", add)
     // console.log(res3)
   }
 
@@ -104,7 +104,7 @@ function Animate() {
     
     const wordsArr = []
     const sendData = { word: wordVisibilty}
-    const words = await axios.post("http://localhost:8080/get-selected-words", sendData)
+    const words = await axios.post(BACKEND + "/get-selected-words", sendData)
     console.log()
     if (mintWordCount === wordeLenCounter && wallAddress == ownerAddress) {
       { words.data.map((item, i) => wordsArr.push(item.wallet)) }
@@ -114,7 +114,7 @@ function Animate() {
 
 
   const getMintWord = async () => {
-    const mintWord = await axios.post("http://localhost:8080/get-word-count", { word: wordVisibilty })
+    const mintWord = await axios.post(BACKEND + "/get-word-count", { word: wordVisibilty })
     console.log(mintWord)
     setMinWordCount(mintWord.data.count)
   }
