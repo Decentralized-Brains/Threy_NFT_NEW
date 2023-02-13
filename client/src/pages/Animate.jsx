@@ -5,6 +5,12 @@ import abi from "../abi.json"
 import { BACKEND } from '../config'
 import { generateChar } from '../functions/GenRanChar'
 import "./home.css"
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// toast.configure()
+
+
+
 
 function Animate() {
   const [prev, setPrev] = useState(false)
@@ -76,21 +82,24 @@ function Animate() {
     signer = provider.getSigner();
     const walletAddress = await signer.getAddress()
     setWallAddress(walletAddress);
-    
+    const generatedChar = generateChar()
     setPrev(true)
-    const data = { wallet: walletAddress, char: generateChar(walletAddress) }
+    const data = { wallet: walletAddress, char: generatedChar }
     const res = await axios.post(BACKEND + "/set-data", data)
   }
 
   const getData = async () => {
     const add = { wallet: wallAddress }
     const res2 = await axios.post(BACKEND + "/get-data", add)
-    // console.log(res2)
+    console.log(res2)
     setReturnChar(res2.data.char)
     setwordVisibilty(res2.data.word)
+    setWordPrevMode(true)
+    try{
     const wordLengthCounter = (res2.data.word.length)
     setWordLenCounter(wordLengthCounter)
-    setWordPrevMode(true)
+    }catch(e)
+    {}
   }
 
   const setWord = async (word) => {
@@ -104,6 +113,7 @@ function Animate() {
     const wordsArr = []
     const sendData = { word: wordVisibilty}
     const words = await axios.post(BACKEND + "/get-selected-words", sendData)
+    console.log()
     if (mintWordCount === wordeLenCounter && wallAddress == ownerAddress) {
       { words.data.map((item, i) => wordsArr.push(item.wallet)) }
       whiteList(wordsArr)
@@ -136,6 +146,7 @@ function Animate() {
     const cnn = await contract.whiteList(arr, { gasLimit: 3000000 })
   }
 
+
   useEffect(() => {
     if (wallAddress !== "")
       getData()
@@ -143,8 +154,8 @@ function Animate() {
     getSelectedWords()
   }, [wallAddress,getData()])
 
-
-  const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK", "QUEEN"]
+console.log(returnChar)
+  const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK", "QUEEN","VOWEL"]
   return (
     <div>
       <div className="bodie">
@@ -159,7 +170,7 @@ function Animate() {
           <div className='flex flex-col'>
           <span className='text-white text-[14px] font-semibold' name="address" >{wallAddress ? `${wallAddress.substr(0, 5)}...${wallAddress.substr(35, 28)}` : null}</span>
 
-          {wordPrevMode?<h1 className='text-white text-[14px] font-semibold'>Selected: <span className='text-[#42f435]'>{wordVisibilty}</span></h1>:null}
+          {wordVisibilty!==undefined?<h1 className='text-white text-[14px] font-semibold'>Selected: <span className='text-[#42f435]'>{wordVisibilty}</span></h1>:null}
           </div>
           
           
@@ -171,7 +182,7 @@ function Animate() {
 
       <div className="words px-6">
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 gap-10">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => setWord(item)} className='text-red-600 text-center shadow-[#7a2b3b] shadow-lg'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() =>{ setWord(item); window.location.reload(true)}} className='text-red-600 text-center shadow-[#7a2b3b] shadow-lg'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
           )}
         </p>
       </div>
