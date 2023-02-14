@@ -16,10 +16,11 @@ function Animate() {
   const [wordeLenCounter, setWordLenCounter] = useState()
   const [mintWordCount, setMinWordCount] = useState()
   const [ownerAddress, setOwnerAddress] = useState("0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd")
-  const [wordPrevMode,setWordPrevMode] = useState(false)
+  const [wordPrevMode, setWordPrevMode] = useState(false)
 
 
-  
+
+
 
   const type = (showWord) => {
     let images = document.querySelectorAll('img');
@@ -64,9 +65,11 @@ function Animate() {
         return;
       }
     }
+    
   }
 
-  useEffect(() => {
+
+useEffect(() => {
     type()
   }, [])
 
@@ -82,7 +85,7 @@ function Animate() {
     setPrev(true)
     const data = { wallet: walletAddress, char: generatedChar }
     const res = await axios.post(BACKEND + "/set-data", data)
-    
+
   }
 
   const getData = async () => {
@@ -91,11 +94,10 @@ function Animate() {
     setReturnChar(res2.data.char)
     setwordVisibilty(res2.data.word)
     setWordPrevMode(true)
-    try{
-    const wordLengthCounter = (res2.data.word.length)
-    setWordLenCounter(wordLengthCounter)
-    }catch(e)
-    {}
+    try {
+      const wordLengthCounter = (res2.data.word.length)
+      setWordLenCounter(wordLengthCounter)
+    } catch (e) { }
   }
 
   const setWord = async (word) => {
@@ -105,9 +107,9 @@ function Animate() {
 
 
   const getSelectedWords = async (word) => {
-    
+
     const wordsArr = []
-    const sendData = { word: wordVisibilty}
+    const sendData = { word: wordVisibilty }
     const words = await axios.post(BACKEND + "/get-selected-words", sendData)
     if (mintWordCount === wordeLenCounter && wallAddress == ownerAddress) {
       { words.data.map((item, i) => wordsArr.push(item.wallet)) }
@@ -145,32 +147,30 @@ function Animate() {
   useEffect(() => {
     if (wallAddress !== "")
       getData()
-      getMintWord()
+    getMintWord()
     getSelectedWords()
-  }, [wallAddress,getData()])
+  }, [wallAddress, getData()])
 
-  const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK", "QUEEN","VOWEL"]
+  const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK", "QUEEN", "VOWEL"]
   return (
     <div>
       <div className="bodie">
-        
         <div className='absolute flex flex-col items-end gap-2 top-4 right-4'>
-        
           <div className='flex gap-4'>
             {mintWordCount === wordeLenCounter ? <button onClick={() => { mintNft() }} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
-            
+          
             <button onClick={() => { connecWallet() }} className='btn text-white hover:bg-[#1ea214] px-8 py-2 rounded-lg bg-[#19c50d] right-8'>Connect</button>
-            
-            
+
+
           </div>
           <div className='flex flex-col p-2'>
-          <span className='text-white text-[14px] font-semibold' name="address" >{wallAddress ? `${wallAddress.substr(0, 5)}...${wallAddress.substr(35, 28)}` : null}</span>
+            <span className='text-white text-[14px] font-semibold' name="address" >{wallAddress ? `${wallAddress.substr(0, 5)}...${wallAddress.substr(35, 28)}` : null}</span>
 
-          {wordVisibilty!==undefined?<h1 className='text-white text-[14px] font-semibold'>Selected: <span className='text-[#42f435]'>{wordVisibilty}</span></h1>:null}
-          {returnChar? <span className='text-white'>Character: <span className='text-[#42f435] font-semibold'> {returnChar} </span></span>:null}
+            {wordVisibilty !== undefined ? <h1 className='text-white text-[14px] font-semibold'>Selected: <span className='text-[#42f435]'>{wordVisibilty}</span></h1> : null}
+            {returnChar ? <span className='text-white'>Character: <span className='text-[#42f435] font-semibold'> {returnChar} </span></span> : null}
           </div>
-          
-          
+
+
         </div>
         <h1 id="myh1" className="header"></h1>
         <span className='text-[#19c50d]'></span>
@@ -179,7 +179,7 @@ function Animate() {
 
       <div className="words px-6">
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 gap-10">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() =>{ setWord(item); window.location.reload(true)}} className='text-red-600 text-center shadow-[#7a2b3b] shadow-lg'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item); window.location.reload(true) }} className='text-red-600 text-center shadow-[#7a2b3b] shadow-lg'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
           )}
         </p>
       </div>
