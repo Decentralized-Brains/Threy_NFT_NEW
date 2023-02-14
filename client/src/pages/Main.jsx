@@ -31,10 +31,12 @@ function Main() {
       </div>
       
       <div className="intro">
-      <div >
+      <div>
         <img alt="" className="win95" src={win95} />
+        <div className="align--pc">
         <img onClick={()=>{navigate("home");heightScroll()}} alt="" className="computer link1" src={tumblr} />
-        <p className="enter max-sm:left-[55%] sm:left-[52%] md:left-[51%]">enter</p>
+        <p className="enter">enter</p>
+        </div>
       </div>
       </div>
       
