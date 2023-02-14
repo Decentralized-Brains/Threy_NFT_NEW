@@ -67,10 +67,27 @@ function Animate() {
     }
     
   }
+  const heightScroll = function () {
+    // Get the current scroll position
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    // Disable scrolling
+    document.body.style.overflow = "hidden";
+    // Wait for 10 seconds
+    setTimeout(function () {
+      // Re-enable scrolling and set the scroll position back to where it was
+      document.body.style.overflow = "";
+      window.scrollTo(scrollLeft, scrollTop);
+    }, 18000);
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    }
+  }
 
 
 useEffect(() => {
-    type()
+  heightScroll()  
+  type()
   }, [])
 
 

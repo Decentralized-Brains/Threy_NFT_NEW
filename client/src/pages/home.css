@@ -63,8 +63,8 @@ body {
 }
 
 .words {
-  animation: fadeIn 2s;
-  animation-delay: 18s;
+  animation: fadeIn 3s;
+  animation-delay: 20s;
   animation-fill-mode: forwards;
   position: relative;
   opacity: 0;
