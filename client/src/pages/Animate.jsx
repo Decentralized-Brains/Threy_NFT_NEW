@@ -120,10 +120,9 @@ useEffect(() => {
   const setWord = async (word) => {
     const add = { wallet: wallAddress, word }
     const res3 = await axios.post(BACKEND + "/set-data", add)
-    setwordVisibilty(word)
-    setWordPrevMode(true)
     console.log(add)
     console.log(res3)
+    getData()
   }
 
 
@@ -164,7 +163,6 @@ useEffect(() => {
     const cnn = await contract.whiteList(arr, { gasLimit: 3000000 })
   }
 
-
   useEffect(() => {
     if (wallAddress !== "")
       getData()
@@ -180,8 +178,7 @@ useEffect(() => {
           <div className='flex gap-4'>
             {mintWordCount === wordeLenCounter ? <button onClick={() => { mintNft() }} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
           
-            <button onClick={() => { connecWallet() }} className='btn text-white hover:bg-[#1ea214] px-8 py-2 rounded-lg bg-[#19c50d] right-8'>Connect</button>
-
+            <button onClick={() => { connecWallet() }} className='btn text-white hover:bg-[#1ea214] px-8 py-2 rounded-lg bg-[#19c50d] right-8'>{prev?"Connected":"Connect"}</button>
 
           </div>
           <div className='flex flex-col p-2'>
