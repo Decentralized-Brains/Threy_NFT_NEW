@@ -63,8 +63,8 @@ body {
 }
 
 .words {
-  animation: fadeIn 2s;
-  animation-delay: 18s;
+  animation: fadeIn 3s;
+  animation-delay: 21s;
   animation-fill-mode: forwards;
   position: relative;
   opacity: 0;
@@ -75,8 +75,9 @@ body {
   /* width: 1500px; */
   height: 12550px;
   margin-top: 6500px;
+  max-width: 1644px;
   /* display: flex; */
-  /* align-items: center; */
+  align-items: center;
 
   justify-content: center;
 }

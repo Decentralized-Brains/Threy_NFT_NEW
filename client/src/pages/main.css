@@ -16,6 +16,7 @@ body {
   align-items: center;
   padding: 10px;
   z-index: 5;
+  position: relative;
 }
 
 .win95 {
@@ -23,31 +24,34 @@ body {
   margin-top: 60px;
   margin-bottom: 50px;
   border-radius: 5px;
-  position: relative;
 }
 
 .computer {
   height: 100px;
   z-index: 5;
+  
 }
 
 
 .link1 {
-  position: absolute;
-  left: 48%;
-  top: 70%;
   cursor: url(http://www.rw-designer.com/cursor-extern.php?id=151740), pointer;
 }
 
 
 .enter {
   position: absolute;
-  left: 51%;
-  top: 68%;
-  margin-top: 100px;
   color: white;
   font-family: "win95";
   z-index: 5;
+  margin-top: 90px;
+}
+
+.align--pc{
+  position: absolute;
+  top: 45%;
+  left: 49%;
+  display: flex;
+  justify-content: center;
 }
 
 

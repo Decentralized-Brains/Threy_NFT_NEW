@@ -15,7 +15,7 @@ app.use(express.static('public'))
 app.post("/get-data", async (req, res) => {
   try {
     const user = await User.findOne({ wallet: req.body.wallet })
-    if (!user) return res.status(404).json({})
+    if (!user) return res.status(404).json({data:"Not Found"})
     res.status(200).json(user)
   } catch (err) {
     console.log(err)
