@@ -80,7 +80,7 @@ function Animate() {
       // Re-enable scrolling and set the scroll position back to where it was
       document.body.style.overflow = "";
       window.scrollTo(scrollLeft, scrollTop);
-    }, 18000);
+    }, 15000);
     window.onbeforeunload = function () {
       window.scrollTo(0, 0);
     }
@@ -173,8 +173,7 @@ useEffect(() => {
     getMintWord()
     getSelectedWords()
   }, [wallAddress, getData()])
-console.log(mintWordCount)
-console.log(wordeLenCounter)
+
   return (
     <div>
       <div className="bodie">
