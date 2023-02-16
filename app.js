@@ -48,7 +48,11 @@ app.post("/set-data", async (req, res) => {
     if (!user) user = new User({ wallet })
 
     if (char && !user.char) user.char = char
-    if (word && !user.word) user.word = word
+    if (word && !user.word) {
+      const totalWordCount = await User.countDocuments({ word })
+      if (totalWordCount == word.length) return res.status(500).json({ message: "This word is full! Try another" })
+      user.word = word
+    }
     await user.save()
 
     res.status(200).json(user)
