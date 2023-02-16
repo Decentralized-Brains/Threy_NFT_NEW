@@ -18,6 +18,7 @@ function Animate() {
   const [mintWordCount, setMinWordCount] = useState()
   const [ownerAddress, setOwnerAddress] = useState("0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd")
   const [wordPrevMode, setWordPrevMode] = useState(false)
+  const [seeButton, setButton] = useState(false)
 
 
 
@@ -87,7 +88,7 @@ function Animate() {
 
 
 useEffect(() => {
-  heightScroll()  
+  // heightScroll()  
   type()
   }, [])
 
@@ -142,6 +143,8 @@ useEffect(() => {
   const getMintWord = async () => {
     const mintWord = await axios.post(BACKEND + "/get-word-count", { word: wordVisibilty })
     setMinWordCount(mintWord.data.count)
+    setButton(true)
+
   }
 
   const mintNft = async () => {
@@ -170,14 +173,14 @@ useEffect(() => {
     getMintWord()
     getSelectedWords()
   }, [wallAddress, getData()])
-
-  // const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK", "QUEEN", "VOWEL","ANNEX"]
+console.log(mintWordCount)
+console.log(wordeLenCounter)
   return (
     <div>
       <div className="bodie">
         <div className='absolute flex flex-col items-end gap-2 top-4 right-4'>
           <div className='flex gap-4'>
-            {mintWordCount === wordeLenCounter ? <button onClick={() => { mintNft() }} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
+            {mintWordCount === wordeLenCounter && seeButton ? <button onClick={() => { mintNft() }} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
           
             <button onClick={() => { connecWallet() }} className='btn text-white hover:bg-[#1ea214] px-8 py-2 rounded-lg bg-[#19c50d] right-8'>{prev?"Connected":"Connect"}</button>
 
@@ -197,8 +200,8 @@ useEffect(() => {
       </div>
 
       <div className="words">
-        <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 gap-6">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
+        <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 px-4 gap-4">
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b]'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
           )}
         </p>
       </div>
