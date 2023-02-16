@@ -19,7 +19,7 @@ function Main() {
       // Re-enable scrolling and set the scroll position back to where it was
       document.body.style.overflow = "";
       window.scrollTo(scrollLeft, scrollTop);
-    }, 18000);
+    }, 17000);
     window.onbeforeunload = function () {
       window.scrollTo(0, 0);
     }

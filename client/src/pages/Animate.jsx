@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import abi from "../abi.json"
 import { BACKEND } from '../config'
 import { generateChar } from '../functions/GenRanChar'
+import words from "./Words"
 import "./home.css"
 
 
@@ -49,7 +50,7 @@ function Animate() {
     }
 
     // Start Function 2
-    let text2 = `<h1>How to mint</h1><p>1. Connect your wallet <br> 2. Identify your assigned letter <br> 3. Find a word with your letter in it (must be red(unclaimed)) <br> 4. Search for peers that will allow you to finish the word <br> 5. Click the word the same time as your friends (you have 30 seconds before it resets) <br> 6. Once the word is fully green, a mint button should appear, click that <br> 7. Confirm the transaction and recieve your nft <br><br>dont refresh or you will have to watch the animation again, the words status are updated live</p><h1 class='stats'>Price : 0.015 <br>Supply : 3000 <br></h1>`;
+    let text2 = `<h1>How to mint</h1><p>1. Connect your wallet <br> 2. Identify your assigned letter <br> 3. Find a word with your letter in it (must be red(unclaimed) <br> 4. Search for peers that will allow you to finish the word <br> 5. Click the word the same time as your friends (you have 30 seconds before it resets) <br> 6. Once the word is fully green, a mint button should appear, click that <br> 7. Confirm the transaction and recieve your nft <br><br>dont refresh or you will have to watch the animation again, the words status are updated live</p><h1 class='stats'>Price : 0.015 <br>Supply : 3000 <br></h1>`;
     let counter2 = 0;
     let intervalId2;
 
@@ -170,7 +171,7 @@ useEffect(() => {
     getSelectedWords()
   }, [wallAddress, getData()])
 
-  const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK", "QUEEN", "VOWEL","ANNEX"]
+  // const words = ["HELLO", "APPLE", "FLANK", "GHOST", "JUMPS", "MIZEN", "COMIC", "RABBIT", "YOURK", "QUEEN", "VOWEL","ANNEX"]
   return (
     <div>
       <div className="bodie">
@@ -195,9 +196,9 @@ useEffect(() => {
         <p id="myp1" className="paragraph" ></p>
       </div>
 
-      <div className="words px-6">
-        <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 gap-10">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item) }} className='text-red-600 text-center shadow-[#7a2b3b] shadow-lg'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
+      <div className="words">
+        <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 gap-6">
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
           )}
         </p>
       </div>

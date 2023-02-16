@@ -64,7 +64,7 @@ body {
 
 .words {
   animation: fadeIn 3s;
-  animation-delay: 21s;
+  animation-delay: 17.5s;
   animation-fill-mode: forwards;
   position: relative;
   opacity: 0;
