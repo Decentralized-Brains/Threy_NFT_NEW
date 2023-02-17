@@ -88,7 +88,7 @@ function Animate() {
 
 
 useEffect(() => {
-  // heightScroll()  
+  heightScroll()  
   type()
   }, [])
 
@@ -200,7 +200,7 @@ useEffect(() => {
 
       <div className="words">
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 px-4 gap-4">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b]'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
           )}
         </p>
       </div>
