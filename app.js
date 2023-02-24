@@ -54,6 +54,7 @@ app.post("/get-word-count", async (req, res) => {
 app.post("/set-data", async (req, res) => {
   try {
     const { wallet, char, word, claimedIdx } = req.body
+
     if (!wallet) return res.status(500).json({})
     let user = await User.findOne({ wallet })
     if (!user) user = new User({ wallet })
@@ -61,7 +62,7 @@ app.post("/set-data", async (req, res) => {
     if (char && !user.char) user.char = char
     if (word && claimedIdx) {
       if (user.word) {
-        let wrd1 = await Word.find({ word: user.word })
+        let wrd1 = await Word.findOne({ word: user.word })
         wrd1.taken[user.claimedIdx] = false
         await wrd1.save()
       }
@@ -69,7 +70,7 @@ app.post("/set-data", async (req, res) => {
       // if (totalWordCount == word.length) return res.status(500).json({ message: "This word is full! Try another" })
       user.word = word
       user.claimedIdx = claimedIdx
-      let wrd = await Word.find({ word })
+      let wrd = await Word.findOne({ word })
       wrd.taken[claimedIdx] = true
       await wrd.save()
     }

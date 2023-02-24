@@ -134,13 +134,15 @@ useEffect(() => {
       claimedIdx = i
     }
     
-
     if (claimedIdx == -1) return window.alert("You cant choose this word.no char is free")
     const add = { wallet: wallAddress, word, claimedIdx }
+
+    // return console.log(add)
     const res3 = await axios.post(BACKEND + "/set-data", add)
     console.log(add)
     console.log(res3)
     getData()
+    getWordsFromDatabase()
   }
 
 
@@ -194,7 +196,7 @@ useEffect(() => {
     let res = []
     let history = wordsTMP[idx].taken
     for (let i = 0; i < item.length; i++) {
-      if (history[i]) res.push(<span className='char-taken'>{item.charAt(i)}</span>)
+      if (history[i]) res.push(<span className='char-taken text-green-600'>{item.charAt(i)}</span>)
       else res.push(item.charAt(i))
     }
     return res
