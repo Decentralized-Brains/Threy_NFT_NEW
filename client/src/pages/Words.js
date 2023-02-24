@@ -554,8 +554,7 @@ const  words= [
     "coast",
     "endorse",
     "crowd",
-    "avalanche",   
-        
+    "avalanche",  
 ]
 
 export default words
