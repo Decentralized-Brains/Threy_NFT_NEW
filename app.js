@@ -2,6 +2,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 const User = require("./userModel")
+const Word = require("./wordModel")
 
 const MONGO_URI = "mongodb+srv://testApp:sr0d1GR4SmKPXJvZ@cluster0.x9a7koe.mongodb.net/testNft?retryWrites=true&w=majority"
 const PORT = 8080
@@ -11,6 +12,16 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('public'))
 
+
+app.get("/get-words", async (req, res) => {
+  try {
+    const words = await Word.find()
+    res.status(200).json(words)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json([])
+  }
+})
 
 app.post("/get-data", async (req, res) => {
   try {
@@ -42,16 +53,25 @@ app.post("/get-word-count", async (req, res) => {
 
 app.post("/set-data", async (req, res) => {
   try {
-    const { wallet, char, word } = req.body
+    const { wallet, char, word, claimedIdx } = req.body
     if (!wallet) return res.status(500).json({})
     let user = await User.findOne({ wallet })
     if (!user) user = new User({ wallet })
 
     if (char && !user.char) user.char = char
-    if (word) {
-      const totalWordCount = await User.countDocuments({ word })
-      if (totalWordCount == word.length) return res.status(500).json({ message: "This word is full! Try another" })
+    if (word && claimedIdx) {
+      if (user.word) {
+        let wrd1 = await Word.find({ word: user.word })
+        wrd1.taken[user.claimedIdx] = false
+        await wrd1.save()
+      }
+      // const totalWordCount = await User.countDocuments({ word })
+      // if (totalWordCount == word.length) return res.status(500).json({ message: "This word is full! Try another" })
       user.word = word
+      user.claimedIdx = claimedIdx
+      let wrd = await Word.find({ word })
+      wrd.taken[claimedIdx] = true
+      await wrd.save()
     }
     await user.save()
 

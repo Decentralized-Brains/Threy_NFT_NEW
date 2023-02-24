@@ -4,13 +4,14 @@ import React, { useEffect, useState } from 'react'
 import abi from "../abi.json"
 import { BACKEND } from '../config'
 import { generateChar } from '../functions/GenRanChar'
-import words from "./Words"
 import "./home.css"
 
 
 
 function Animate() {
   const [prev, setPrev] = useState(false)
+  const [words, setWords] = useState([])
+  const [wordsTMP, setWordsTMP] = useState([])
   const [wallAddress, setWallAddress] = useState("")
   const [returnChar, setReturnChar] = useState()
   const [wordVisibilty, setwordVisibilty] = useState()
@@ -19,10 +20,6 @@ function Animate() {
   const [ownerAddress, setOwnerAddress] = useState("0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd")
   const [wordPrevMode, setWordPrevMode] = useState(false)
   const [seeButton, setButton] = useState(false)
-
-
-
-
 
   const type = (showWord) => {
     let images = document.querySelectorAll('img');
@@ -86,8 +83,17 @@ function Animate() {
     }
   }
 
+  const getWordsFromDatabase = async () => {
+    const res = await axios.get(BACKEND + "/get-words")
+    const w = res.data.map(w => w.word)
+    setWords(w)
+    console.log(w)
+    setWordsTMP(res.data)
+  }
+
 
 useEffect(() => {
+  getWordsFromDatabase()
   heightScroll()  
   type()
   }, [])
@@ -108,6 +114,7 @@ useEffect(() => {
   }
 
   const getData = async () => {
+    if (!wallAddress) return
     const add = { wallet: wallAddress }
     const res2 = await axios.post(BACKEND + "/get-data", add)
     setReturnChar(res2.data.char)
@@ -119,8 +126,17 @@ useEffect(() => {
     } catch (e) { }
   }
 
-  const setWord = async (word) => {
-    const add = { wallet: wallAddress, word }
+  const setWord = async (word, idx) => {
+    let claimedIdx = -1
+     let history = wordsTMP[idx].taken
+    for (let i = 0; i < word.length; i++) {
+      if (history[i] || word.charAt(i) !=  returnChar) continue
+      claimedIdx = i
+    }
+    
+
+    if (claimedIdx == -1) return window.alert("You cant choose this word.no char is free")
+    const add = { wallet: wallAddress, word, claimedIdx }
     const res3 = await axios.post(BACKEND + "/set-data", add)
     console.log(add)
     console.log(res3)
@@ -174,6 +190,16 @@ useEffect(() => {
     getSelectedWords()
   }, [wallAddress, getData()])
 
+  const checkWord = (item, idx) => {
+    let res = []
+    let history = wordsTMP[idx].taken
+    for (let i = 0; i < item.length; i++) {
+      if (history[i]) res.push(<span className='char-taken'>{item.charAt(i)}</span>)
+      else res.push(item.charAt(i))
+    }
+    return res
+  }
+
   return (
     <div>
       <div className="bodie">
@@ -200,7 +226,7 @@ useEffect(() => {
 
       <div className="words">
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 px-4 gap-4">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{item}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item,i) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
           )}
         </p>
       </div>
