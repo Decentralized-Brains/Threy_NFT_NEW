@@ -233,7 +233,6 @@ useEffect(() => {
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 px-4 gap-4">
           {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item,i);getAlert(item,returnChar) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
           )}
-          <ToastContainer />
         </p>
       </div>
     </div>
