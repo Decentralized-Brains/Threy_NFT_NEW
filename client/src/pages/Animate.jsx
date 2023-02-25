@@ -5,8 +5,6 @@ import abi from "../abi.json"
 import { BACKEND } from '../config'
 import { generateChar } from '../functions/GenRanChar'
 import "./home.css"
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 
 function Animate() {
