@@ -5,7 +5,8 @@ import abi from "../abi.json"
 import { BACKEND } from '../config'
 import { generateChar } from '../functions/GenRanChar'
 import "./home.css"
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Animate() {
@@ -185,6 +186,10 @@ useEffect(() => {
     const cnn = await contract.whiteList(arr, { gasLimit: 3000000 })
   }
 
+  const getAlert =(item,returnChar)=>{
+    alert(`You Got  "${returnChar}"  and Your Selected Word is  "${item}"`)
+  }
+
   useEffect(() => {
     if (wallAddress !== "")
       getData()
@@ -228,8 +233,9 @@ useEffect(() => {
 
       <div className="words">
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 px-4 gap-4">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item,i) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item,i);getAlert(item,returnChar) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
           )}
+          <ToastContainer />
         </p>
       </div>
     </div>
