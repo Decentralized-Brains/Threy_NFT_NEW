@@ -185,7 +185,7 @@ useEffect(() => {
   }
 
   const getAlert =(item,returnChar)=>{
-    alert(`You Got  "${returnChar}"  and Your Selected Word is  "${item}"`)
+    alert(` You Selected "${item}" `)
   }
 
   useEffect(() => {
@@ -199,7 +199,7 @@ useEffect(() => {
     let res = []
     let history = wordsTMP[idx].taken
     for (let i = 0; i < item.length; i++) {
-      if (history[i]) res.push(<span className='char-taken text-green-600'>{item.charAt(i)}</span>)
+      if (history[i]) res.push(<span className='char-taken text-[#00FF00]'>{item.charAt(i)}</span>)
       else res.push(item.charAt(i))
     }
     return res
@@ -225,7 +225,7 @@ useEffect(() => {
 
         </div>
         <h1 id="myh1" className="header"></h1>
-        <span className='text-[#19c50d]'></span>
+        <span className='text-[#00FF00]'></span>
         <p id="myp1" className="paragraph" ></p>
       </div>
 
