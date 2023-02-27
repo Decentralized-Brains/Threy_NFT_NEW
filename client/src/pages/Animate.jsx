@@ -190,7 +190,7 @@ useEffect(() => {
 
   useEffect(() => {
     if (wallAddress !== "")
-      getData()
+    getData()
     getMintWord()
     getSelectedWords()
   }, [wallAddress, getData()])
@@ -221,8 +221,6 @@ useEffect(() => {
             {wordVisibilty !== undefined ? <h1 className='text-white text-[14px] font-semibold'>Selected: <span className='text-[#42f435]'>{wordVisibilty}</span></h1> : null}
             {returnChar ? <span className='text-white'>Character: <span className='text-[#42f435] font-semibold'> {returnChar} </span></span> : null}
           </div>
-
-
         </div>
         <h1 id="myh1" className="header"></h1>
         <span className='text-[#00FF00]'></span>
@@ -231,7 +229,7 @@ useEffect(() => {
 
       <div className="words">
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 px-4 gap-4">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item,i);getAlert(item,returnChar) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{item}</span>)
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item,i);getAlert(item,returnChar) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{checkWord(item, i)}</span>)
           )}
         </p>
       </div>
