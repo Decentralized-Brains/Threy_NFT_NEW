@@ -4,6 +4,7 @@ const cors = require("cors")
 const User = require("./userModel")
 const Word = require("./wordModel")
 
+
 const MONGO_URI = "mongodb+srv://testApp:sr0d1GR4SmKPXJvZ@cluster0.x9a7koe.mongodb.net/testNft?retryWrites=true&w=majority"
 const PORT = 8080
 

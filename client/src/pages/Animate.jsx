@@ -6,7 +6,6 @@ import { BACKEND } from '../config'
 import { generateChar } from '../functions/GenRanChar'
 import "./home.css"
 
-
 function Animate() {
   const [prev, setPrev] = useState(false)
   const [words, setWords] = useState([])
@@ -19,6 +18,7 @@ function Animate() {
   const [ownerAddress, setOwnerAddress] = useState("0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd")
   const [wordPrevMode, setWordPrevMode] = useState(false)
   const [seeButton, setButton] = useState(false)
+  const [reducerEffect, setReducerEffect] = useReducer(x=>x+1,0);
 
   const type = (showWord) => {
     let images = document.querySelectorAll('img');
@@ -85,10 +85,15 @@ function Animate() {
   const getWordsFromDatabase = async () => {
     const res = await axios.get(BACKEND + "/get-words")
     const w = res.data.map(w => w.word)
+    
     setWords(w)
     console.log(w)
     setWordsTMP(res.data)
   }
+
+
+
+  
 
 
 useEffect(() => {
@@ -205,6 +210,10 @@ useEffect(() => {
     return res
   }
 
+useEffect(()=>{
+  getWordsFromDatabase()
+},[setWord])
+
   return (
     <div>
       <div className="bodie">
@@ -229,7 +238,7 @@ useEffect(() => {
 
       <div className="words">
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 px-4 gap-4">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item,i);getAlert(item,returnChar) }} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{checkWord(item, i)}</span>)
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item,i);getAlert(item,returnChar)}} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{checkWord(item, i)}</span>)
           )}
         </p>
       </div>
