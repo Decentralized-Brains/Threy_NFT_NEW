@@ -18,8 +18,8 @@ function Animate() {
   const [ownerAddress, setOwnerAddress] = useState("0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd")
   const [wordPrevMode, setWordPrevMode] = useState(false)
   const [seeButton, setButton] = useState(false)
-  const [reducerEffect, setReducerEffect] = useReducer(x=>x+1,0);
 
+  
   const type = (showWord) => {
     let images = document.querySelectorAll('img');
     for (let i = 0; i < images.length; i++) {
