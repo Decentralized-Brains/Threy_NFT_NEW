@@ -19,7 +19,7 @@ function Animate() {
   const [wordPrevMode, setWordPrevMode] = useState(false)
   const [seeButton, setButton] = useState(false)
 
-  
+
   const type = (showWord) => {
     let images = document.querySelectorAll('img');
     for (let i = 0; i < images.length; i++) {
@@ -87,14 +87,8 @@ function Animate() {
     const w = res.data.map(w => w.word)
     
     setWords(w)
-    console.log(w)
     setWordsTMP(res.data)
   }
-
-
-
-  
-
 
 useEffect(() => {
   getWordsFromDatabase()
