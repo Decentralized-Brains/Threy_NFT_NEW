@@ -6,6 +6,7 @@ import { BACKEND } from '../config'
 import { generateChar } from '../functions/GenRanChar'
 import "./home.css"
 
+
 function Animate() {
   const [prev, setPrev] = useState(false)
   const [words, setWords] = useState([])
@@ -18,7 +19,7 @@ function Animate() {
   const [ownerAddress, setOwnerAddress] = useState("0xe5D16741A7E81eC488A48EeA19A6Ba22cC7748Fd")
   const [wordPrevMode, setWordPrevMode] = useState(false)
   const [seeButton, setButton] = useState(false)
-
+  const [listedValue, setListedValue] = useState()
 
   const type = (showWord) => {
     let images = document.querySelectorAll('img');
@@ -109,6 +110,9 @@ useEffect(() => {
     const data = { wallet: walletAddress, char: generatedChar }
     const res = await axios.post(BACKEND + "/set-data", data)
 
+    const contract = new ethers.Contract("0x58e0eb650be042eea34229b5d05430ddbd40365c",abi,signer);
+    const whiteListed =await contract.whiteListed(walletAddress)
+    setListedValue(parseInt(whiteListed._hex,16))
   }
 
   const getData = async () => {
@@ -125,6 +129,7 @@ useEffect(() => {
   }
 
   const setWord = async (word, idx) => {
+    
     let claimedIdx = -1
      let history = wordsTMP[idx].taken
     for (let i = 0; i < word.length; i++) {
@@ -134,14 +139,12 @@ useEffect(() => {
     
     if (claimedIdx == -1) return window.alert("You cant choose this word.no char is free")
     const add = { wallet: wallAddress, word, claimedIdx }
-
-    // return console.log(add)
     const res3 = await axios.post(BACKEND + "/set-data", add)
-    console.log(add)
-    console.log(res3)
+
     getData()
     getWordsFromDatabase()
   }
+
 
 
   const getSelectedWords = async (word) => {
@@ -149,7 +152,8 @@ useEffect(() => {
     const wordsArr = []
     const sendData = { word: wordVisibilty }
     const words = await axios.post(BACKEND + "/get-selected-words", sendData)
-    if (mintWordCount === wordeLenCounter && wallAddress == ownerAddress) {
+    console.log(mintWordCount , wordeLenCounter, wallAddress)
+    if (mintWordCount === wordeLenCounter && wallAddress === ownerAddress) {
       { words.data.map((item, i) => wordsArr.push(item.wallet)) }
       whiteList(wordsArr)
     }
@@ -162,6 +166,8 @@ useEffect(() => {
     setButton(true)
 
   }
+
+
 
   const mintNft = async () => {
     const contractAddress = "0xA4c9351D9653d362E975D234bB9ca775Fb78aeF8"
@@ -183,16 +189,22 @@ useEffect(() => {
     const cnn = await contract.whiteList(arr, { gasLimit: 3000000 })
   }
 
+
+
   const getAlert =(item,returnChar)=>{
     alert(` You Selected "${item}" `)
   }
 
   useEffect(() => {
     if (wallAddress !== "")
+    {
     getData()
     getMintWord()
+    if(mintWordCount && wordeLenCounter)
     getSelectedWords()
-  }, [wallAddress, getData()])
+  }
+    
+  }, [wallAddress,mintWordCount, wordeLenCounter ])
 
   const checkWord = (item, idx) => {
     let res = []
@@ -232,7 +244,7 @@ useEffect(()=>{
 
       <div className="words">
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 px-4 gap-4">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => { setWord(item,i);getAlert(item,returnChar)}} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{checkWord(item, i)}</span>)
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => {{listedValue===0?setWord(item,i):alert("Your are alread Done! ")} ;getAlert(item,returnChar)}} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{checkWord(item, i)}</span>)
           )}
         </p>
       </div>
