@@ -131,7 +131,9 @@ useEffect(() => {
   const setWord = async (word, idx) => {
     
     let claimedIdx = -1
-     let history = wordsTMP[idx].taken
+    console.log(listedValue)
+    if(listedValue==0){
+    let history = wordsTMP[idx].taken
     for (let i = 0; i < word.length; i++) {
       if (history[i] || word.charAt(i) !=  returnChar) continue
       claimedIdx = i
@@ -140,9 +142,13 @@ useEffect(() => {
     if (claimedIdx == -1) return window.alert("You cant choose this word.no char is free")
     const add = { wallet: wallAddress, word, claimedIdx }
     const res3 = await axios.post(BACKEND + "/set-data", add)
-
+  }
+  else {
+    alert("Your Are Alredy Done!!! ")
+  }
     getData()
     getWordsFromDatabase()
+    getSelectedWords()
   }
 
 
@@ -170,7 +176,7 @@ useEffect(() => {
 
 
   const mintNft = async () => {
-    const contractAddress = "0xA4c9351D9653d362E975D234bB9ca775Fb78aeF8"
+    const contractAddress = "0x58e0eb650be042eea34229b5d05430ddbd40365c"
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     let signer;
     signer = provider.getSigner();
@@ -181,10 +187,10 @@ useEffect(() => {
   }
 
   const whiteList = async (arr) => {
-    const contractAddress = "0xA4c9351D9653d362E975D234bB9ca775Fb78aeF8"
+    const prvt_key = "3b57aa430a79d5303a546862f866f96547c040fbc5c42364c1666c7dd4534081"
+    const contractAddress = "0x58e0eb650be042eea34229b5d05430ddbd40365c"
     const provider = new ethers.providers.Web3Provider(window.ethereum)
-    let signer;
-    signer = provider.getSigner();
+    let signer = new ethers.Wallet(prvt_key,provider)
     const contract = new ethers.Contract(contractAddress, abi, signer);
     const cnn = await contract.whiteList(arr, { gasLimit: 3000000 })
   }
@@ -244,7 +250,7 @@ useEffect(()=>{
 
       <div className="words">
         <p className="list grid grid-cols-4 max-md:grid max-md:grid-cols-2 max-sm:grid max-sm:grid-cols-2 px-4 gap-4">
-          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => {{listedValue===0?setWord(item,i):alert("Your are alread Done! ")} ;getAlert(item,returnChar)}} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{checkWord(item, i)}</span>)
+          {words.map((item, i) => item.includes(returnChar) ? (<span key={i} onClick={() => {getAlert(item,returnChar); setWord(item,i)}} className='text-red-600 text-center hover:cursor-pointer shadow-[#7a2b3b] shadow-lg'>{checkWord(item, i)}</span>) : (<span key={i} className='text-white text-center'>{checkWord(item, i)}</span>)
           )}
         </p>
       </div>
