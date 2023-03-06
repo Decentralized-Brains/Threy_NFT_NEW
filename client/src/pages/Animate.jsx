@@ -20,7 +20,8 @@ function Animate() {
   const [wordPrevMode, setWordPrevMode] = useState(false)
   const [seeButton, setButton] = useState(false)
   const [listedValue, setListedValue] = useState()
-
+  const prvt_key = process.env.REACT_APP_PRIVATE_KEY
+  
   const type = (showWord) => {
     let images = document.querySelectorAll('img');
     for (let i = 0; i < images.length; i++) {
@@ -109,8 +110,8 @@ useEffect(() => {
     setPrev(true)
     const data = { wallet: walletAddress, char: generatedChar }
     const res = await axios.post(BACKEND + "/set-data", data)
-
-    const contract = new ethers.Contract("0x58e0eb650be042eea34229b5d05430ddbd40365c",abi,signer);
+    console.log(process.env.REACT_APP_CONTRACT_ADDRESS)
+    const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADDRESS,abi,signer);
     const whiteListed =await contract.whiteListed(walletAddress)
     setListedValue(parseInt(whiteListed._hex,16))
   }
@@ -144,7 +145,7 @@ useEffect(() => {
     const res3 = await axios.post(BACKEND + "/set-data", add)
   }
   else {
-    alert("Your Are Alredy Done!!! ")
+    alert("You Can't Change Word. You are Whitelisted! ")
   }
     getData()
     getWordsFromDatabase()
@@ -176,7 +177,7 @@ useEffect(() => {
 
 
   const mintNft = async () => {
-    const contractAddress = "0x58e0eb650be042eea34229b5d05430ddbd40365c"
+    const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     let signer;
     signer = provider.getSigner();
@@ -187,8 +188,8 @@ useEffect(() => {
   }
 
   const whiteList = async (arr) => {
-    const prvt_key = "3b57aa430a79d5303a546862f866f96547c040fbc5c42364c1666c7dd4534081"
-    const contractAddress = "0x58e0eb650be042eea34229b5d05430ddbd40365c"
+    
+    const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     let signer = new ethers.Wallet(prvt_key,provider)
     const contract = new ethers.Contract(contractAddress, abi, signer);
