@@ -131,7 +131,7 @@ useEffect(() => {
     await getWordsFromDatabase()
     
     let claimedIdx = -1
-    if(listedValue==0){
+    if(listedValue===0){
     let history = wordsTMP[idx].taken
     for (let i = 0; i < word.length; i++) {
       if (history[i] || word.charAt(i) !=  returnChar) continue
