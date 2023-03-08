@@ -8,7 +8,6 @@ import "./home.css"
 
 
 function Animate() {
-  const [prev, setPrev] = useState(false)
   const [words, setWords] = useState([])
   const [wordsTMP, setWordsTMP] = useState([])
   const [wallAddress, setWallAddress] = useState("")
@@ -101,19 +100,18 @@ useEffect(() => {
 
   const connecWallet = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
-    let signer;
     await provider.send("eth_requestAccounts", []);
-    signer = provider.getSigner();
+    const signer = await provider.getSigner();
+
     const walletAddress = await signer.getAddress()
-    setWallAddress(walletAddress);
-    const generatedChar = generateChar()
-    setPrev(true)
-    const data = { wallet: walletAddress, char: generatedChar }
-    const res = await axios.post(BACKEND + "/set-data", data)
-    console.log(process.env.REACT_APP_CONTRACT_ADDRESS)
-    const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADDRESS,abi,signer);
-    const whiteListed =await contract.whiteListed(walletAddress)
-    setListedValue(parseInt(whiteListed._hex,16))
+    setWallAddress(walletAddress)
+
+    const data = { wallet: walletAddress, char: generateChar() }
+    await axios.post(`${BACKEND}/set-data`, data)
+
+    const contract = new ethers.Contract(process.env.REACT_APP_CONTRACT_ADDRESS, abi, signer);
+    const whiteListed = await contract.whiteListed(walletAddress)
+    setListedValue(parseInt(whiteListed))
   }
 
   const getData = async () => {
@@ -130,9 +128,9 @@ useEffect(() => {
   }
 
   const setWord = async (word, idx) => {
+    await getWordsFromDatabase()
     
     let claimedIdx = -1
-    console.log(listedValue)
     if(listedValue==0){
     let history = wordsTMP[idx].taken
     for (let i = 0; i < word.length; i++) {
@@ -142,7 +140,7 @@ useEffect(() => {
     
     if (claimedIdx == -1) return window.alert("You cant choose this word.no char is free")
     const add = { wallet: wallAddress, word, claimedIdx }
-    const res3 = await axios.post(BACKEND + "/set-data", add)
+    await axios.post(BACKEND + "/set-data", add)
   }
   else {
     alert("You Can't Change Word. You are Whitelisted! ")
@@ -159,7 +157,7 @@ useEffect(() => {
     const wordsArr = []
     const sendData = { word: wordVisibilty }
     const words = await axios.post(BACKEND + "/get-selected-words", sendData)
-    console.log(mintWordCount , wordeLenCounter, wallAddress)
+    // console.log(mintWordCount , wordeLenCounter, wallAddress)
     if (mintWordCount === wordeLenCounter && wallAddress === ownerAddress) {
       { words.data.map((item, i) => wordsArr.push(item.wallet)) }
       whiteList(wordsArr)
@@ -183,7 +181,7 @@ useEffect(() => {
     signer = provider.getSigner();
     const contract = new ethers.Contract(contractAddress, abi, signer);
     const cn = await contract.safeMint(wallAddress, wordVisibilty, { gasLimit: 3000000 });
-    console.log(cn)
+    // console.log(cn)
 
   }
 
@@ -223,9 +221,7 @@ useEffect(() => {
     return res
   }
 
-useEffect(()=>{
-  getWordsFromDatabase()
-},[setWord])
+
 
   return (
     <div>
@@ -234,7 +230,7 @@ useEffect(()=>{
           <div className='flex gap-4'>
             {mintWordCount === wordeLenCounter && seeButton ? <button onClick={() => { mintNft() }} className='btn text-white hover:bg-[#1ea214] px-10 py-2 rounded-lg bg-[#19c50d]'>Mint</button> : null}
           
-            <button onClick={() => { connecWallet() }} className='btn text-white hover:bg-[#1ea214] px-8 py-2 rounded-lg bg-[#19c50d] right-8'>{prev?"Connected":"Connect"}</button>
+            <button onClick={connecWallet} className='btn text-white hover:bg-[#1ea214] px-8 py-2 rounded-lg bg-[#19c50d] right-8'>{wallAddress?"Connected":"Connect"}</button>
 
           </div>
           <div className='flex flex-col p-2'>
